@@ -1,0 +1,13 @@
+---
+- name: Postgres PVC
+  k8s:
+    definition: "{{ lookup('template', 'templates/postgres.pvc.yaml') | from_yaml }}"
+
+- name: Postgres Service
+  k8s:
+    definition: "{{ lookup('template', 'templates/postgres.service.yaml') | from_yaml }}"
+
+- name: Postgres Deployment
+  k8s:
+    definition: "{{ lookup('template', 'templates/postgres.deployment.yaml') | from_yaml }}"
+

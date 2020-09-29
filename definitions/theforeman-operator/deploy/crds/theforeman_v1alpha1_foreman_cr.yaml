@@ -1,0 +1,7 @@
+apiVersion: theforeman.org/v1alpha1
+kind: Foreman
+metadata:
+  name: foreman-application
+spec:
+  # Add fields here
+  foreman_image: 'oprazak/foreman:2.0-1'

@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: 'Create namespace'
+      command: 'oc apply -f ./definitions/theforeman.namespace.yml'
+
+    - name: 'Switch to new namespace'
+      command: 'oc project theforeman'
+
+    - name: 'Create route'
+      command: 'oc apply -f ./definitions/theforeman.route.yaml'
+
+    - name: 'Create CRD'
+      command: 'oc apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml'
+
+    - name: 'Create operator role'
+      command: 'oc apply -f ./definitions/theforeman-operator/deploy/role.yaml'
+
+    - name: 'Create operator service account'
+      command: 'oc apply -f ./definitions/theforeman-operator/deploy/service_account.yaml'
+
+    - name: 'Create operator role binding'
+      command: 'oc apply -f ./definitions/theforeman-operator/deploy/role_binding.yaml'
+
+    - name: 'Add scc to operator account'
+      command: 'oc adm policy add-scc-to-user anyuid system:serviceaccount:theforeman:theforeman-operator'
+
+    - name: 'Create CR'
+      command: 'oc apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'
+
+    - name: 'Deploy operator'
+      command: 'oc apply -f ./definitions/theforeman-operator/deploy/operator.yaml'

@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: theforeman-route
+  namespace: theforeman
+spec:
+  to:
+    kind: Service
+    name: foreman
+  port:
+    targetPort: port-8080-tcp

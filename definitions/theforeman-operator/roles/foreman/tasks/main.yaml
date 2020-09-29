@@ -1,0 +1,8 @@
+---
+- name: Foreman service
+  k8s:
+    definition: "{{ lookup('template', 'templates/foreman.service.yaml') | from_yaml }}"
+
+- name: Foreman deployment
+  k8s:
+    definition: "{{ lookup('template', 'templates/foreman.deployment.yaml') | from_yaml }}"

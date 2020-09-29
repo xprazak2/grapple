@@ -1,0 +1,8 @@
+---
+- name: "Redis resources"
+  k8s:
+    definition: "{{ lookup('template', 'templates/redis.' + item + '.yaml') | from_yaml }}"
+  with_items:
+    - pvc
+    - service
+    - deployment
