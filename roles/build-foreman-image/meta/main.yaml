@@ -1,0 +1,7 @@
+---
+dependencies:
+  # - role: build-dir
+  - role: prepare-foreman-image
+  - role: build-image
+  - role: push-image
+  # - role: build-dir
