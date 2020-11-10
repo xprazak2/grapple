@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars_files:
+    - './vars.yml'
+  tasks:
+    - name: foreman-proxy image is present
+      containers.podman.podman_image:
+        name: foreman-proxy
+        tag: "{{ foreman_proxy_version }}-{{ foreman_proxy_version_build }}"
+        pull: false
+      register: foreman_proxy_test
+
+    - name: foreman-proxy image present
+      assert:
+        that: not foreman_proxy_test.changed
+
+    - name: foreman image is present
+      containers.podman.podman_image:
+        name: foreman
+        tag: "{{ foreman_version }}-{{ foreman_version_build }}"
+        pull: false
+      register: foreman_test
+
+    - name: foreman image present
+      assert:
+        that: not foreman_test.changed
