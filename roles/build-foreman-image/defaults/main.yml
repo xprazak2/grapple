@@ -1,0 +1,6 @@
+---
+image: foreman
+registry: ''
+version: latest
+snippets: []
+rpms_to_install: []

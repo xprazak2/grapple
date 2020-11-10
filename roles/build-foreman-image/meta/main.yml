@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: set-build-facts
+  - role: create-workspace
+  - role: foreman-image
+  - role: build-image
+  - role: push-image

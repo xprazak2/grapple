@@ -1,0 +1,7 @@
+---
+image: foreman-proxy
+rpms_to_install: []
+configs_to_copy: []
+snippets: []
+registry: ''
+version_build: 1

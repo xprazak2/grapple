@@ -2,11 +2,11 @@
 - hosts: localhost
   gather_facts: no
   vars:
+    registry: ''
     image: foreman
-  vars_files:
-    - vars/build-image-vars.yml
+    version: latest
+    version_build: 1
+    snippets: []
+    rpms_to_install: []
   roles:
-    - role: create-workspace
-    - role: foreman-image
-    - role: build-image
-    - role: push-image
+    - role: build-foreman-image

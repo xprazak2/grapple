@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  vars_files:
+    - './vars.yml'
+  tasks:
+    - name: Delete foreman-proxy image
+      containers.podman.podman_image:
+        name: foreman-proxy
+        tag: "{{ foreman_proxy_version }}-{{ foreman_proxy_version_build }}"
+        state: absent
+
+    - name: Delete foreman image
+      containers.podman.podman_image:
+        name: foreman
+        tag: "{{ foreman_version }}-{{ foreman_version_build }}"
+        state: absent
