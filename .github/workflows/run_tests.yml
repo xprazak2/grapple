@@ -1,0 +1,14 @@
+---
+name: Run Tests
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@2
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt && ansible-galaxy collection install -r requirements.yml
+      - name: Run Molecule
+        run: |
+          molecule test

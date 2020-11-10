@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  vars_files:
+    - './vars.yml'
+  roles:
+    - role: build_foreman_proxy_image
+      version: "{{ foreman_proxy_version }}"
+      version_build: "{{ foreman_proxy_version_build }}"
+    - role: build_foreman_image
+      version: "{{ foreman_version }}"
+      version_build: "{{ foreman_version_build }}"

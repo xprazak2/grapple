@@ -1,0 +1,5 @@
+---
+foreman_version: 2.1
+foreman_version_build: test
+foreman_proxy_version: 2.1
+foreman_proxy_version_build: test

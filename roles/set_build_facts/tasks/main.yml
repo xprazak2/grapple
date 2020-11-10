@@ -1,0 +1,6 @@
+---
+- name: Set facts for image build
+  set_fact:
+    image_name: "{{ (registry == '') | ternary(image, [registry, image] | join('/')) }}"
+    tag: "{{ (version == 'latest') | ternary(version, [version, version_build] | join('-')) }}"
+    build_dir: "{{ lookup('env', 'PWD') }}/tmp"

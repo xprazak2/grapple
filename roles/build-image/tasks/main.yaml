@@ -1,3 +1,0 @@
----
-- name: "Build image for {{ image }}"
-  command: "podman build --tag {{ image_name }}:{{ tag }} {{ build_dir }}/{{ image }}"

@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    registry: ''
+    image: foreman-proxy
+    version: latest
+    version_build: 1
+    snippets: []
+    rpms_to_install: []
+    configs_to_copy: []
+  roles:
+    - role: build_foreman_proxy_image

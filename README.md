@@ -11,3 +11,4 @@ The purpose of this repo is to concentrate Foreman containerization efforts in o
 ## TOC
 
 * [How to build images](docs/how_to_build_images.md)
+* [How to test](docs/how_to_test.md)
