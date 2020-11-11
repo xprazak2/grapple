@@ -28,11 +28,11 @@ RUN yum -y install {{ rpms_to_install | join(' ') }} && \
 
 {% endfor %}
 
-COPY container-assets/database.yml /etc/foreman/database.yml
-COPY container-assets/settings.yaml /etc/foreman/settings.yaml
-COPY container-assets/entrypoint.sh /usr/bin/entrypoint.sh
-COPY container-assets/start_foreman.sh /usr/bin/start_foreman.sh
-COPY container-assets/wait_on_postgres.py /usr/bin/wait_on_postgres.py
+COPY container_assets/database.yml /etc/foreman/database.yml
+COPY container_assets/settings.yaml /etc/foreman/settings.yaml
+COPY container_assets/entrypoint.sh /usr/bin/entrypoint.sh
+COPY container_assets/start_foreman.sh /usr/bin/start_foreman.sh
+COPY container_assets/wait_on_postgres.py /usr/bin/wait_on_postgres.py
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/usr/bin/start_foreman.sh"]

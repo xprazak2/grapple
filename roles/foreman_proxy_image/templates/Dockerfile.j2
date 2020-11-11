@@ -7,11 +7,11 @@ RUN echo "tsflags=nodocs" >> /etc/yum.conf && \
     yum -y install foreman-proxy {{ rpms_to_install | join(' ') }} && \
     yum clean all
 
-COPY container-assets/logs.yml /etc/foreman-proxy/settings.d/logs.yml
-COPY container-assets/settings.yml /etc/foreman-proxy/settings.yml
+COPY container_assets/logs.yml /etc/foreman-proxy/settings.d/logs.yml
+COPY container_assets/settings.yml /etc/foreman-proxy/settings.yml
 
 {% for config in configs_to_copy %}
-  COPY container-assets/{{config}} /etc/foreman-proxy/settings.d/{{config}}
+  COPY container_assets/{{config}} /etc/foreman-proxy/settings.d/{{config}}
 {% endfor %}
 
 {% if rpms_to_install | length > 0 %}

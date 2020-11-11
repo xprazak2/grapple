@@ -9,4 +9,4 @@
     snippets: []
     rpms_to_install: []
   roles:
-    - role: build-foreman-image
+    - role: build_foreman_image

@@ -3,3 +3,4 @@
   file:
     path: "{{ build_dir }}/{{ image }}"
     state: "{{ build_dir_state }}"
+    mode: '755'

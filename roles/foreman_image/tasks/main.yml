@@ -1,12 +1,12 @@
 ---
-- name: "Create Dockerfile for foreman-proxy"
+- name: "Create Dockerfile for foreman"
   template:
     src: "Dockerfile.j2"
     dest: "{{ build_dir }}/{{ image }}/Dockerfile"
     mode: 0600
 
-- name: "Copy container assets for foreman-proxy to build dir"
+- name: "Copy container assets for foreman to build dir"
   copy:
-    src: "{{ role_path }}/files/container-assets"
+    src: "{{ role_path }}/files/container_assets"
     dest: "{{ build_dir }}/{{ image }}"
     mode: preserve
