@@ -5,7 +5,7 @@
     registry: ''
     image: foreman
     version: latest
-    version_build: 1
+    release: 1
     snippets: []
     rpms_to_install: []
   roles:
