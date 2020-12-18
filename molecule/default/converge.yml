@@ -6,7 +6,7 @@
   roles:
     - role: build_foreman_proxy_image
       version: "{{ foreman_proxy_version }}"
-      version_build: "{{ foreman_proxy_version_build }}"
+      release: "{{ foreman_proxy_release }}"
     - role: build_foreman_image
       version: "{{ foreman_version }}"
-      version_build: "{{ foreman_version_build }}"
+      release: "{{ foreman_release }}"

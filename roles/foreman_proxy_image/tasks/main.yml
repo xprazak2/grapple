@@ -1,12 +1,31 @@
 ---
+- name: "Copy snippets"
+  copy:
+    src: "{{ lookup('env', 'PWD') }}/snippets/{{ image }}/{{ item }}"
+    dest: "{{ role_path }}/templates/"
+    mode: preserve
+  with_items: "{{ snippets }}"
+
 - name: "Create Dockerfile for foreman-proxy"
   template:
     src: "Dockerfile.j2"
     dest: "{{ build_dir }}/{{ image }}/Dockerfile"
     mode: 0600
 
+- name: "Remove snippets"
+  file:
+    path: "{{ role_path }}/templates/{{ item }}"
+    state: absent
+  with_items: "{{ snippets }}"
+
 - name: "Copy container assets for foreman-proxy to build dir"
   copy:
     src: "{{ role_path }}/files/container_assets"
+    dest: "{{ build_dir }}/{{ image }}"
+    mode: preserve
+
+- name: "Copy additional container assets for foreman-proxy to build dir"
+  copy:
+    src: "{{ lookup('env', 'PWD') }}/snippets/{{ image }}/container-assets"
     dest: "{{ build_dir }}/{{ image }}"
     mode: preserve

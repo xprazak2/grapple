@@ -8,7 +8,7 @@
     - name: foreman-proxy image is present
       containers.podman.podman_image:
         name: foreman-proxy
-        tag: "{{ foreman_proxy_version }}-{{ foreman_proxy_version_build }}"
+        tag: "{{ foreman_proxy_version }}-{{ foreman_proxy_release }}"
         pull: false
       register: foreman_proxy_test
 
@@ -19,7 +19,7 @@
     - name: foreman image is present
       containers.podman.podman_image:
         name: foreman
-        tag: "{{ foreman_version }}-{{ foreman_version_build }}"
+        tag: "{{ foreman_version }}-{{ foreman_release }}"
         pull: false
       register: foreman_test
 
