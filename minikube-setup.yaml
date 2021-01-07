@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: 'Create namespace'
+      command: 'kubectl apply -f ./definitions/theforeman.namespace.yaml'
+
+    - name: 'Set new namespace as current context'
+      command: 'kubectl config set-context --current --namespace theforeman'
+
+    - name: 'Enable ingress addon'
+      command: 'minikube addons enable ingress'
+
+    - name: 'Create ingress'
+      command: 'kubectl apply -f ./definitions/theforeman.route.yaml'
+
+    - name: 'Create CRD'
+      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml'
+
+    - name: 'Create operator role'
+      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/role.yaml'
+
+    - name: 'Create operator service account'
+      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/service_account.yaml'
+
+    - name: 'Create operator role binding'
+      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/role_binding.yaml'
+
+    - name: 'Create CR'
+      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'
+
+    - name: 'Deploy operator'
+      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/operator.yaml'

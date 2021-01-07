@@ -3,7 +3,7 @@
   gather_facts: no
   tasks:
     - name: 'Create namespace'
-      command: 'oc apply -f ./definitions/theforeman.namespace.yml'
+      command: 'oc apply -f ./definitions/theforeman.namespace.yaml'
 
     - name: 'Switch to new namespace'
       command: 'oc project theforeman'
