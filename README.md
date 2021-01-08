@@ -11,4 +11,5 @@ The purpose of this repo is to concentrate Foreman containerization efforts in o
 ## TOC
 
 * [How to run Foreman in K8](docs/foreman_demo.md)
+* [How to test](docs/tests.md)
 * [How to update operator](docs/operator_update.md)

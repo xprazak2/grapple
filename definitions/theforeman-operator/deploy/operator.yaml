@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: theforeman-operator
+  namespace: "{{ application_namespace }}"
 spec:
   replicas: 1
   selector:
@@ -19,13 +20,13 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: oprazak/theforeman-operator:0.0.5
+          image: "{{ operator_image }}"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
-          image: oprazak/theforeman-operator:0.0.5
+          image: "{{ operator_image }}"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner

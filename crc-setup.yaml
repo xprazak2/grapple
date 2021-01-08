@@ -1,18 +1,23 @@
 ---
 - hosts: localhost
   gather_facts: no
+  vars_files:
+    - playbooks/vars.yml
   tasks:
     - name: 'Create namespace'
-      command: 'oc apply -f ./definitions/theforeman.namespace.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.namespace.yaml') | from_yaml }}"
 
     - name: 'Switch to new namespace'
-      command: 'oc project theforeman'
+      command: "oc project {{ application_namespace }}"
 
     - name: 'Create route'
-      command: 'oc apply -f ./definitions/theforeman.route.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.route.yaml') | from_yaml }}"
 
     - name: 'Create CRD'
-      command: 'oc apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml') | from_yaml }}"
 
     - name: 'Create operator role'
       command: 'oc apply -f ./definitions/theforeman-operator/deploy/role.yaml'
@@ -26,8 +31,10 @@
     - name: 'Add scc to operator account'
       command: 'oc adm policy add-scc-to-user anyuid system:serviceaccount:theforeman:theforeman-operator'
 
-    - name: 'Create CR'
-      command: 'oc apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'
+    - name: 'Deploy Operator'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/operator.yaml') | from_yaml }}"
 
-    - name: 'Deploy operator'
-      command: 'oc apply -f ./definitions/theforeman-operator/deploy/operator.yaml'
+    - name: 'Create CR'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml') | from_yaml }}"

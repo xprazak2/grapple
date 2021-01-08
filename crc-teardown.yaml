@@ -1,15 +1,23 @@
 ---
 - hosts: localhost
   gather_facts: no
+  vars_files:
+    - playbooks/vars.yml
   tasks:
-    - name: 'Delete CR'
-      command: 'oc delete -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'
+     name: 'Delete CR'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml') | from_yaml }}"
+        state: absent
 
     - name: 'Delete CRD'
-      command: 'oc delete -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml') | from_yaml }}"
+        state: absent
 
-    - name: 'Delete operator'
-      command: 'oc delete -f ./definitions/theforeman-operator/deploy/operator.yaml'
+    - name: 'Delete Operator'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/operator.yaml') | from_yaml }}"
+        state: absent
 
     - name: 'Delete operator role binding'
       command: 'oc delete -f ./definitions/theforeman-operator/deploy/role_binding.yaml'
@@ -21,4 +29,6 @@
       command: 'oc delete -f ./definitions/theforeman-operator/deploy/service_account.yaml'
 
     - name: 'Delete namespace'
-      command: 'oc delete -f ./definitions/theforeman.namespace.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.namespace.yaml') | from_yaml }}"
+        state: absent

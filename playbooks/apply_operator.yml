@@ -1,0 +1,11 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    application_namespace: theforeman
+    operator_image: docker.io/oprazak/theforeman-operator:0.0.6'
+    state: present
+  tasks:
+    - name: 'Apply CR change'
+      k8s:
+        definition: "{{ lookup('template', '/'.join([lookup('env', 'PWD'), 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'])) | from_yaml }}"
+        state: "{{ state }}"

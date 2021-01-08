@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Route
 metadata:
   name: theforeman-route
-  namespace: theforeman
+  namespace: "{{ application_namespace }}"
 spec:
   to:
     kind: Service
