@@ -1,21 +1,31 @@
 ---
 - hosts: localhost
   gather_facts: no
+  vars_files:
+    - playbooks/vars.yml
+  vars:
+    wait_for_cr: no
   tasks:
-    - name: 'Create namespace'
-      command: 'kubectl apply -f ./definitions/theforeman.namespace.yaml'
-
-    - name: 'Set new namespace as current context'
-      command: 'kubectl config set-context --current --namespace theforeman'
-
     - name: 'Enable ingress addon'
       command: 'minikube addons enable ingress'
 
-    - name: 'Create ingress'
-      command: 'kubectl apply -f ./definitions/theforeman.route.yaml'
+    - name: 'Create namespace'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.namespace.yaml') | from_yaml }}"
+
+    - name: 'Set new namespace as current context'
+      command: "kubectl config set-context --current --namespace {{ application_namespace }}"
+
+    - name: 'Wait for all controllers to come up'
+      command: kubectl wait --namespace kube-system --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=90s
+
+    - name: 'Create ingess'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.ingress.yaml') | from_yaml }}"
 
     - name: 'Create CRD'
-      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml') | from_yaml }}"
 
     - name: 'Create operator role'
       command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/role.yaml'
@@ -26,8 +36,16 @@
     - name: 'Create operator role binding'
       command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/role_binding.yaml'
 
-    - name: 'Create CR'
-      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'
+    - name: 'Deploy Operator'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/operator.yaml') | from_yaml }}"
 
-    - name: 'Deploy operator'
-      command: 'kubectl apply -f ./definitions/theforeman-operator/deploy/operator.yaml'
+    - name: 'Create CR'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml') | from_yaml }}"
+        wait: "{{ wait_for_cr }}"
+        wait_timeout: 300
+        wait_condition:
+          type: Running
+          reason: Successful
+          status: "True"

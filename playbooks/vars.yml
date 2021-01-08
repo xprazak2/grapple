@@ -1,0 +1,4 @@
+---
+application_namespace: theforeman
+operator_image: 'docker.io/oprazak/theforeman-operator:0.0.6'
+foreman_image: 'oprazak/foreman:2.0-1'

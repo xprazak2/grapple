@@ -1,15 +1,29 @@
 ---
 - hosts: localhost
   gather_facts: no
+  vars:
+    application_namespace: theforeman
+    operator_image: docker.io/oprazak/theforeman-operator:0.0.6
   tasks:
     - name: 'Delete CR'
-      command: 'kubectl delete -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_cr.yaml') | from_yaml }}"
+        state: absent
 
     - name: 'Delete CRD'
-      command: 'kubectl delete -f ./definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/crds/theforeman_v1alpha1_foreman_crd.yaml') | from_yaml }}"
+        state: absent
 
-    - name: 'Delete operator'
-      command: 'kubectl delete -f ./definitions/theforeman-operator/deploy/operator.yaml'
+    - name: 'Delete Operator'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman-operator/deploy/operator.yaml') | from_yaml }}"
+        state: absent
+
+    - name: 'Delete ingess'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.ingress.yaml') | from_yaml }}"
+        state: absent
 
     - name: 'Delete operator role binding'
       command: 'kubectl delete -f ./definitions/theforeman-operator/deploy/role_binding.yaml'
@@ -17,5 +31,10 @@
     - name: 'Delete operator role'
       command: 'kubectl delete -f ./definitions/theforeman-operator/deploy/role.yaml'
 
+    - name: 'Switch to default namespace'
+      command: "kubectl config set-context --current --namespace default"
+
     - name: 'Delete namespace'
-      command: 'kubectl delete -f ./definitions/theforeman.namespace.yaml'
+      k8s:
+        definition: "{{ lookup('template', 'definitions/theforeman.namespace.yaml') | from_yaml }}"
+        state: absent

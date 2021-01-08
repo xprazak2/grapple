@@ -1,0 +1,49 @@
+---
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test_job:
+    name: Test Foreman is deployed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Minikube
+        uses: manusa/actions-setup-minikube@v2.3.0
+        with:
+          minikube version: 'v1.16.0'
+          kubernetes version: 'v1.20.0'
+          driver: docker
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build operator image
+        run: ansible-playbook playbooks/build_operator.yml -e image="theforeman/foreman-operator:test"
+
+      - name: Push image to cache
+        run: minikube cache add theforeman/foreman-operator:test
+
+      - name: Reload minikube cache
+        run: minikube cache reload
+
+      - name: Deploy all
+        run: ansible-playbook minikube-setup.yaml -e operator_image="theforeman/foreman-operator:test" -e application_namespace=theforeman-test -e wait_for_cr=yes
+
+      - name: Wait for pods to be ready
+        run: kubectl wait --namespace theforeman-test --for=condition=Ready pod --timeout=30s --all
+
+      - name: Get pods
+        if: always()
+        run: kubectl get pods
+
+      - name: Run tests
+        run: pytest

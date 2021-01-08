@@ -2,6 +2,8 @@ apiVersion: theforeman.org/v1alpha1
 kind: Foreman
 metadata:
   name: foreman-application
+  namespace: "{{ application_namespace }}"
 spec:
   # Add fields here
-  foreman_image: 'oprazak/foreman:2.0-1'
+  application_namespace: "{{ application_namespace }}"
+  foreman_image: "{{ foreman_image }}"

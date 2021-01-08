@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-data
-  namespace: theforeman
+  namespace: "{{ application_namespace }}"
 spec:
   resources:
     requests:

@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
-  namespace: theforeman
+  namespace: "{{ application_namespace }}"
   labels:
     app: redis
 spec:

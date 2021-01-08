@@ -1,0 +1,20 @@
+- name: Build Operator
+  hosts: localhost
+  gather_facts: false
+  vars:
+    image: theforeman.org/theforeman-operator:testing
+    build_path: "{{ lookup('env', 'PWD') }}/definitions/theforeman-operator"
+  tasks:
+    # using command so we don't need to install any dependencies
+    - name: Get existing image hash
+      command: docker images -q {{ image }}
+      register: prev_hash_raw
+      changed_when: false
+
+    - name: Build Operator Image
+      command: "docker build -f {{ build_path }}/build/Dockerfile -t {{ image }} {{ build_path }}"
+      register: build_cmd
+      changed_when: not hash or (hash and hash not in cmd_out)
+      vars:
+        hash: '{{ prev_hash_raw.stdout }}'
+        cmd_out: '{{ "".join(build_cmd.stdout_lines[-2:]) }}'

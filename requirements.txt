@@ -1,0 +1,5 @@
+openshift
+kubernetes
+docker
+ansible
+pytest
