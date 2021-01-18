@@ -6,7 +6,10 @@ The `definitions` folder contains all the resource definitions needed to deploy 
 
 Prerequisities for the next steps:
 * Ansible
-* CRC with `oc` client configured locally and user account with sufficient permissions to create cluster-wide resources
+* CRC with `oc` client configured locally and user account with sufficient permissions to create cluster-wide resources OR minkube with kubectl
+
+
+## CRC
 
 To run a playbook against your [CRC](https://github.com/code-ready/crc) cluster, execute:
 
@@ -18,4 +21,18 @@ To clean-up all the created resources, run:
 
 ```
 ansible-playbook crc-teardown.yaml
+```
+
+## Minikube
+
+To run a playbook against your [CRC](https://minikube.sigs.k8s.io/docs/start/) cluster, execute:
+
+```
+ansible-playbook minikube-setup.yaml
+```
+
+To clean-up all the created resources, run:
+
+```
+ansible-playbook minikube-teardown.yaml
 ```
