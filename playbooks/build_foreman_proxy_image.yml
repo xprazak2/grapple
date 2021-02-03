@@ -9,5 +9,6 @@
     snippets: []
     rpms_to_install: []
     configs_to_copy: []
+    builder_tool: podman
   roles:
     - role: build_foreman_proxy_image

@@ -1,0 +1,5 @@
+- name: "Build image with docker for {{ image }}"
+  community.general.docker_image:
+    name: "{{ image_name }}"
+    tag: "{{ tag }}"
+    path: "{{ build_dir }}/{{ image }}"

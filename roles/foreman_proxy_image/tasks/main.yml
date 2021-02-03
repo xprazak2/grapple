@@ -24,8 +24,14 @@
     dest: "{{ build_dir }}/{{ image }}"
     mode: preserve
 
+- name: "Check if snippets exist"
+  stat:
+    path: "{{ lookup('env', 'PWD') }}/snippets/{{ image }}/container-assets"
+  register: snippets_exist
+
 - name: "Copy additional container assets for foreman-proxy to build dir"
   copy:
     src: "{{ lookup('env', 'PWD') }}/snippets/{{ image }}/container-assets"
     dest: "{{ build_dir }}/{{ image }}"
     mode: preserve
+  when: snippets_exist.stat.isdir is defined and snippets_exist.stat.isdir

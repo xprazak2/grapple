@@ -8,5 +8,6 @@
     release: 1
     snippets: []
     rpms_to_install: []
+    builder_tool: podman
   roles:
     - role: build_foreman_image

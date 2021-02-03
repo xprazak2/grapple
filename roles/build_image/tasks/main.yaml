@@ -1,6 +1,2 @@
 ---
-- name: "Build image for {{ image }}"
-  containers.podman.podman_image:
-    name: "{{ image_name }}"
-    tag: "{{ tag }}"
-    path: "{{ build_dir }}/{{ image }}"
+- include: "{{builder_tool}}.yaml"

@@ -4,3 +4,4 @@ snippets: []
 registry: ''
 release: 1
 rpms_to_install: []
+builder_tool: podman
