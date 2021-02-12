@@ -1,0 +1,15 @@
+[Unit]
+Description=Vanilla Proxy
+After=docker.service
+
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+#User=vagrant
+ExecStart=/usr/bin/docker run --rm -p 8080:8080 --name %n foreman-proxy:2.3-1
+ExecStop=/usr/bin/docker stop -t 10 %n
+
+[Install]
+WantedBy=multi-user.target
