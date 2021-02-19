@@ -1,3 +1,5 @@
 tmp
 .venv
 snippets
+grapple.egg-info
+grapple/__pycache__
