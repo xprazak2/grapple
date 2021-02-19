@@ -2,15 +2,16 @@ FROM centos:7
 
 RUN echo "tsflags=nodocs" >> /etc/yum.conf && \
     yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+                   https://fedorapeople.org/groups/katello/releases/yum/{{ katello_versions[version] }}/katello/el7/x86_64/katello-repos-latest.rpm \
                    http://yum.theforeman.org/releases/{{ version }}/el7/x86_64/foreman-release.rpm && \
-    yum -y install foreman-release-scl && \
-    yum -y install foreman foreman-postgresql tfm-rubygem-puma tfm-rubygem-redis && yum clean all
+    yum -y install ansible qpid-tools foreman-release-scl centos-release-scl-rh && \
+    yum -y install foreman foreman-postgresql tfm-rubygem-puma tfm-rubygem-redis tfm-rubygem-katello && yum clean all
 
 # Generate apipie:cache:index
 RUN yum -y install tfm-rubygem-activerecord-nulldb-adapter && yum clean all
 
-COPY container-assets/schema.rb.nulldb /usr/share/foreman/db/schema.rb
-COPY container-assets/nulldb.rb /usr/share/foreman/bundler.d/nulldb.rb
+COPY container_assets/schema.rb.nulldb /usr/share/foreman/db/schema.rb
+COPY container_assets/nulldb.rb /usr/share/foreman/bundler.d/nulldb.rb
 RUN foreman-rake apipie:cache:index RAILS_ENV=production DATABASE_URL=nulldb://nohost
 
 RUN mv /usr/share/foreman/db/schema.rb /usr/share/foreman/db/schema.rb.nulldb
@@ -30,9 +31,12 @@ RUN yum -y install {{ rpms_to_install | join(' ') }} && \
 
 COPY container_assets/database.yml /etc/foreman/database.yml
 COPY container_assets/settings.yaml /etc/foreman/settings.yaml
+COPY container_assets/katello.yaml /etc/foreman/plugins/katello.yaml
 COPY container_assets/entrypoint.sh /usr/bin/entrypoint.sh
 COPY container_assets/start_foreman.sh /usr/bin/start_foreman.sh
 COPY container_assets/wait_on_postgres.py /usr/bin/wait_on_postgres.py
+
+COPY container_assets/create_qpid_queue.yml /root/playbooks/create_qpid_queue.yml
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/usr/bin/start_foreman.sh"]

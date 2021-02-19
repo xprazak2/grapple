@@ -1,0 +1,6 @@
+---
+katello_versions:
+  'nightly': 'nightly'
+  'latest': 'latest'
+  '2.3': '3.18'
+  '2.2': '3.17'
