@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: set_build_facts
+    version: latest
+  - role: create_workspace
+  - role: qpid_image
+  - role: build_image
+  - role: push_image

@@ -1,0 +1,6 @@
+---
+- name: "Create Dockerfile for Qpid"
+  template:
+    src: "Dockerfile"
+    dest: "{{ build_dir }}/{{ image }}/Dockerfile"
+    mode: 0600

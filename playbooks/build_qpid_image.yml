@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    registry: ''
+    image: qpid
+  roles:
+    - role: build_qpid_image
