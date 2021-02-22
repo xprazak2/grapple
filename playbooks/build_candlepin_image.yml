@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    registry: ''
+    image: candlepin
+    katello_version: latest
+    release: 1
+  roles:
+    - role: build_candlepin_image

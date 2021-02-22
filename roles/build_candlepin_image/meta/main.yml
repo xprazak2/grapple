@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: set_build_facts
+    version: "{{ katello_version }}"
+  - role: create_workspace
+  - role: candlepin_image
+  - role: build_image
+  - role: push_image
